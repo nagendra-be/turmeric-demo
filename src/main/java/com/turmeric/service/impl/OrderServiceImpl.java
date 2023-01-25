@@ -204,7 +204,8 @@ public class OrderServiceImpl implements OrderService {
 			order.setOrderId("WO-" + orderCount);
 			order.setStatus(Status.ACCEPTED.getStatus());
 			order.setAcceptedBy(request.getUserId());
-			//order.setTotalAmount(this.calculateOrderCost(orderRequest.getCupSize(), orderRequest.getRollWeight()));
+			order.setTotalAmount(this.calculateOrderCost(orderRequest.getProductType(), orderRequest.getPackingSize(),
+					orderRequest.getQuantity()));
 			order.setPaymentPending(order.getTotalAmount());
 			this.mongoTemplate.save(order);
 			Update counterUpdate = new Update();
@@ -216,21 +217,28 @@ public class OrderServiceImpl implements OrderService {
 		return new ResponseEntity<>("Unable to create order as order request is not accepted", HttpStatus.OK);
 	}
 
-	private int calculateOrderCost(int cupSize, int rollWeight) {
+	private int calculateOrderCost(String productType, int packingSize, int quantity) {
 		Query query = new Query();
 		AmountMapper mapper = this.mongoTemplate.findOne(query, AmountMapper.class);
 		if (mapper != null) {
-			Map<String, Double> valueMap = mapper.getValues();
-			if (valueMap.containsKey(String.valueOf(cupSize))) {
-				for (Map.Entry<String, Double> entry : valueMap.entrySet()) {
-					if (Integer.parseInt(entry.getKey()) == cupSize) {
-						int cost = entry.getValue().intValue();
-						return cost * rollWeight;
+			Map<String, Map<Integer, Integer>> valueMap = mapper.getValues();
+			if (valueMap.containsKey(String.valueOf(productType))) {
+				for (Map.Entry<String, Map<Integer, Integer>> entry : valueMap.entrySet()) {
+					if (entry.getKey().equalsIgnoreCase(productType)) {
+						Map<Integer, Integer> map = entry.getValue();
+						for (Map.Entry<Integer, Integer> mapEntry : map.entrySet()) {
+							if (mapEntry.getKey() == packingSize) {
+								int cost = mapEntry.getValue().intValue() * quantity;
+								return cost;
+							}
+						}
+
 					}
 				}
 			}
 		}
 		return 0;
+
 	}
 
 	@Override
@@ -288,7 +296,6 @@ public class OrderServiceImpl implements OrderService {
 	public ResponseEntity<?> getPayments() {
 		Query query = new Query();
 		query.with(Sort.by(Sort.Direction.DESC, "createdAt"));
-
 		List<PaymentDetails> payments = this.mongoTemplate.find(query, PaymentDetails.class);
 		if (!CollectionUtils.isEmpty(payments)) {
 			return new ResponseEntity<>(payments, HttpStatus.OK);

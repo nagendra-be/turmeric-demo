@@ -6,7 +6,7 @@ public class CreateOrderRequest {
 	private String customerId;
 	private Date orderDate;
 	private String productType;
-	private String packingSize;
+	private int packingSize;
 	private int quantity;
 
 	public String getCustomerId() {
@@ -33,11 +33,11 @@ public class CreateOrderRequest {
 		this.productType = productType;
 	}
 
-	public String getPackingSize() {
+	public int getPackingSize() {
 		return packingSize;
 	}
 
-	public void setPackingSize(String packingSize) {
+	public void setPackingSize(int packingSize) {
 		this.packingSize = packingSize;
 	}
 

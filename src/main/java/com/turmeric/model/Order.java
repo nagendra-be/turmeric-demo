@@ -28,7 +28,7 @@ public class Order {
 	private int paymentPending;
 	private String orderRequestId;
 	private String productType;
-	private String packingSize;
+	private int packingSize;
 	private int quantity;
 	private int remainingQuantity;
 	private int deliveredQuantity;
@@ -145,11 +145,11 @@ public class Order {
 		this.productType = productType;
 	}
 
-	public String getPackingSize() {
+	public int getPackingSize() {
 		return packingSize;
 	}
 
-	public void setPackingSize(String packingSize) {
+	public void setPackingSize(int packingSize) {
 		this.packingSize = packingSize;
 	}
 
