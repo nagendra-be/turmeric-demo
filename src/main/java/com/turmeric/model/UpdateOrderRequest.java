@@ -7,7 +7,7 @@ public class UpdateOrderRequest {
 	private String customerId;
 	private Date orderDate;
 	private String productType;
-	private String packageSize;
+	private String packingSize;
 	private Integer quantity;
 
 	public String getOrderId() {
@@ -42,12 +42,12 @@ public class UpdateOrderRequest {
 		this.productType = productType;
 	}
 
-	public String getPackageSize() {
-		return packageSize;
+	public String getPackingSize() {
+		return packingSize;
 	}
 
-	public void setPackageSize(String packageSize) {
-		this.packageSize = packageSize;
+	public void setPackingSize(String packingSize) {
+		this.packingSize = packingSize;
 	}
 
 	public Integer getQuantity() {

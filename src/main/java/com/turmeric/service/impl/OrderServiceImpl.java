@@ -121,8 +121,8 @@ public class OrderServiceImpl implements OrderService {
 			if (request.getQuantity() != null) {
 				order.setQuantity(request.getQuantity());
 			}
-			if (request.getPackageSize() != null) {
-				order.setPackageSize(request.getPackageSize());
+			if (request.getPackingSize() != null) {
+				order.setPackingSize(request.getPackingSize());
 			}
 			if (request.getProductType() != null) {
 				order.setProductType(request.getProductType());

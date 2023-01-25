@@ -23,7 +23,7 @@ public class OrderRequest {
 	private String createdBy;
 	private String status;
 	private String productType;
-	private String packageSize;
+	private String packingSize;
 	private int quantity;
 
 	public String getId() {
@@ -90,12 +90,12 @@ public class OrderRequest {
 		this.productType = productType;
 	}
 
-	public String getPackageSize() {
-		return packageSize;
+	public String getPackingSize() {
+		return packingSize;
 	}
 
-	public void setPackageSize(String packageSize) {
-		this.packageSize = packageSize;
+	public void setPackingSize(String packingSize) {
+		this.packingSize = packingSize;
 	}
 
 	public int getQuantity() {
