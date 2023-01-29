@@ -89,6 +89,7 @@ public class TurmericServiceImpl implements TurmericService {
 		query.addCriteria(Criteria.where("customerId").is(request.getCustomerId()));
 		Update update = new Update();
 		update.set("status", request.getStatus());
+		update.set("reason", request.getReason());
 		this.mongoTemplate.updateFirst(query, update, Customer.class);
 		return new ResponseEntity<>("Account" + request.getStatus().toLowerCase() + " successfully", HttpStatus.OK);
 	}

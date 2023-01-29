@@ -25,6 +25,7 @@ public class OrderRequest {
 	private String productType;
 	private int packingSize;
 	private int quantity;
+	private String reason;
 
 	public String getId() {
 		return this.id;
@@ -112,6 +113,14 @@ public class OrderRequest {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 }

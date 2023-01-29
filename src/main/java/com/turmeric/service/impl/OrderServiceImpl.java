@@ -158,7 +158,9 @@ public class OrderServiceImpl implements OrderService {
 		searchCriteria.orOperator(
 				Criteria.where("orderId")
 						.regex(Pattern.compile(searchInput, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)),
-				Criteria.where("paperSupplier")
+				Criteria.where("productType")
+						.regex(Pattern.compile(searchInput, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)),
+				Criteria.where("packingSize")
 						.regex(Pattern.compile(searchInput, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)),
 				Criteria.where("customerId")
 						.regex(Pattern.compile(searchInput, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)));
@@ -189,6 +191,7 @@ public class OrderServiceImpl implements OrderService {
 		query.addCriteria(Criteria.where("orderRequestId").is(request.getOrderRequestId()));
 		Update update = new Update();
 		update.set("status", request.getStatus());
+		update.set("reason", request.getReason());
 		this.mongoTemplate.updateFirst(query, update, OrderRequest.class);
 		if (request.getStatus().equals(Status.ACCEPTED.getStatus())) {
 			OrderRequest orderRequest = this.mongoTemplate.findOne(query, OrderRequest.class);
@@ -207,6 +210,7 @@ public class OrderServiceImpl implements OrderService {
 			order.setTotalAmount(this.calculateOrderCost(orderRequest.getProductType(), orderRequest.getPackingSize(),
 					orderRequest.getQuantity()));
 			order.setPaymentPending(order.getTotalAmount());
+			order.setRemainingQuantity(order.getQuantity());
 			this.mongoTemplate.save(order);
 			Update counterUpdate = new Update();
 			counterUpdate.set("orderCount", orderCount);
